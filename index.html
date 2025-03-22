@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>位置情報で画像を変更</title>
+</head>
+<body>
+    <h2>リアルタイム画像更新</h2>
+    <img id="dynamicImage" src="images/default.png" width="400">
+
+    <script>
+        async function updateImage() {
+            try {
+                const response = await fetch("https://remoteguidesystem.github.io/grafana-image/image.json?t=" + new Date().getTime());
+                const data = await response.json();
+                document.getElementById("dynamicImage").src = data.image_url + "?t=" + new Date().getTime();
+            } catch (error) {
+                console.error("画像の更新に失敗しました:", error);
+            }
+        }
+
+        setInterval(updateImage, 1000);  // 1秒ごとに更新
+    </script>
+</body>
+</html>
