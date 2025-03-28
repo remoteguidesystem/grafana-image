@@ -40,4 +40,4 @@ async function updateImage() {
 }
 
 // 5秒ごとに画像を更新
-setInterval(updateImage, 1000);
+setInterval(updateImage, 2000);
