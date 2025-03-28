@@ -3,28 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>位置情報で画像を変更</title>
+    <title>位置情報で画像切り替え</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h2>リアルタイム画像更新</h2>
-    <img id="dynamicImage" src="yaba11.png" width="400">
-
-    <script>
-async function updateImage() {
-    try {
-        const response = await fetch("https://remoteguidesystem.github.io/grafana-image/image.json", {
-            cache: "no-cache",  // キャッシュを使わない
-            headers: { "Cache-Control": "no-cache, no-store, must-revalidate" } // 強制リロード
-        });
-        const data = await response.json();
-        document.getElementById("dynamicImage").src = data.image_url + "?t=" + new Date().getTime();
-    } catch (error) {
-        console.error("画像の更新に失敗しました:", error);
-    }
-}
-
-setInterval(updateImage, 1000);  // 1秒ごとに更新
-
-    </script>
+    <h1>現在地に応じた画像</h1>
+    <img id="dynamicImage" src="default.png" width="400" height="300">
+    <script src="script.js"></script> <!-- JavaScript を読み込む -->
 </body>
 </html>
