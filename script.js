@@ -11,7 +11,7 @@ async function getLatestImageUrl() {
     const response = await fetch("https://us-east-1-1.aws.cloud2.influxdata.com/api/v2/query", {
         method: "POST",
         headers: {
-            "Authorization": "Token 2QKHD9f1lOBtFCXPb50-dBqPXomdb8sQ_sZu_8D4nmORx18f_TonD0eqZB6rn8mdoNB1k-MPeFn5xTxSaIXTkg==",
+            "Authorization": "Token eU2wHHZ_bamNRtQ6Cc6EsCehGdbqowfiMIYruds7juUEUVfApEsveBr4K3jMVhr5u8AeLPyBDDgijLECTjE9HQ==",
             "Content-Type": "application/vnd.flux",
             "Accept": "application/csv"
         },
