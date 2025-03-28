@@ -25,10 +25,11 @@ async function getLatestImageUrl() {
     let imageUrl = "https://remoteguidesystem.github.io/grafana-image/yaba101.png";
     for (let line of lines) {
         const columns = line.split(",");
-        if (columns.length > 7 && columns[7] === "locID") {
-            imageUrl = "https://remoteguidesystem.github.io/grafana-image/yaba" & columns[6] & ".png";
+        if (columns.length > 6 && columns[6] === "locID") {
+            imageUrl = "https://remoteguidesystem.github.io/grafana-image/yaba" & columns[7] & ".png";
         }
     }
+        console.log("Image URL:", imageUrl);
     return imageUrl;
 }
 
