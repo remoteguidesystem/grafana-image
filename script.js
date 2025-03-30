@@ -3,7 +3,7 @@ async function getLatestImageUrl() {
         from(bucket: "GPS_data")
         |> range(start: -1d)
         |> filter(fn: (r) => r._measurement == "sensor_data" )
-        |> filter(fn: (r) => r.device == "GPS-MW01")
+        |> filter(fn: (r) => r.device == "demo")
         |> filter(fn: (r) => r._field == "locID" )        
         |> last()
     `;
