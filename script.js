@@ -22,7 +22,7 @@ async function getLatestImageUrl() {
     console.log(text); // デバッグ用
     const lines = text.split("\n");
 
-    let imageUrl = "https://remotoguidesystem.netlify.app/images/yaba11.jpg";
+    let imageUrl = "/images/yaba101.jpg";
     for (let line of lines) {
         const columns = line.split(",");
         console.log("columns[6] locID :", columns[6]);
