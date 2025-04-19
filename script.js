@@ -1,4 +1,5 @@
 async function getLatestImageUrl() {
+    console.time("getLatestImageUrl");
     const query = `
         from(bucket: "GPS_data")
         |> range(start: -10s)
@@ -31,6 +32,7 @@ async function getLatestImageUrl() {
         }
     }
         console.log("Image URL:", imageUrl);
+        console.timeEnd("getLatestImageUrl");
     return imageUrl;
 }
 
