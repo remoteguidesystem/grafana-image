@@ -37,8 +37,11 @@ async function getLatestImageUrl() {
 }
 
 async function updateImage() {
+    console.time("updateImage");
+    
     const imageUrl = await getLatestImageUrl();
     document.getElementById("dynamicImage").src = imageUrl;
+    console.timeEnd("updateImage");
 }
 
 // 5秒ごとに画像を更新
