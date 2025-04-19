@@ -1,7 +1,7 @@
 async function getLatestImageUrl() {
     const query = `
         from(bucket: "GPS_data")
-        |> range(start: -1d)
+        |> range(start: -10s)
         |> filter(fn: (r) => r._measurement == "sensor_data" )
         |> filter(fn: (r) => r.device == "GPS-MW01")
         |> filter(fn: (r) => r._field == "locID" )        
@@ -40,4 +40,11 @@ async function updateImage() {
 }
 
 // 5秒ごとに画像を更新
-setInterval(updateImage, 2000);
+// setInterval(updateImage, 2000);
+
+async function updateLoop() {
+    await updateImage();
+    setTimeout(updateLoop, 1000); // 1秒後に次の更新を開始
+}
+
+updateLoop(); // 最初の呼び出し
