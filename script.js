@@ -9,7 +9,7 @@ async function fetchLocIdAndUpdateImage() {
     // 画像のファイル名（例: yaba42.jpg）を作成
     const imageUrl = `/images/yaba${locID}.jpg`;
 
-    const imgElement = document.getElementById('location-image');
+    const imgElement = document.getElementById('targetImage');
     imgElement.src = imageUrl;
 
     // 画像読み込み失敗時のフォールバック
