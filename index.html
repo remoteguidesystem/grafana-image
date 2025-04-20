@@ -15,7 +15,7 @@
     // 定期的に locID を Netlify Function から取得
     async function fetchLocID() {
       try {
-        const response = await fetch('https://your-site.netlify.app/.netlify/functions/getlocID');
+        const response = await fetch('https://remotoguidesystem.netlify.app/.netlify/functions/getlocID');
         const data = await response.json();
         const locID = data.locID || "103"; // locID を取得、なければデフォルト
 
