@@ -8,7 +8,7 @@ export async function handler(event, context) {
   }
 
   // ここで locID を取得する処理（環境変数などから仮で設定）
-  const locID = process.env.LATEST_LOCID || '1';  // 環境変数が未設定なら '1' を返す
+  const locID = process.env.LATEST_LOCID || '104';  // 環境変数が未設定なら '1' を返す
 
   return {
     statusCode: 200,
