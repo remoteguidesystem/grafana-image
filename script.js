@@ -1,55 +1,28 @@
-async function getLatestImageUrl() {
-    console.time("getLatestImageUrl");
-    const query = `
-        from(bucket: "GPS_data")
-        |> range(start: -10s)
-        |> filter(fn: (r) => r._measurement == "sensor_data" )
-        |> filter(fn: (r) => r.device == "GPS-MW01")
-        |> filter(fn: (r) => r._field == "locID" )        
-        |> last()
-    `;
+async function fetchLocIdAndUpdateImage() {
+  try {
+    const response = await fetch('/.netlify/functions/getlocID');
+    const data = await response.json();
 
-    const response = await fetch("https://us-east-1-1.aws.cloud2.influxdata.com/api/v2/query", {
-        method: "POST",
-        headers: {
-            "Authorization": "Token eU2wHHZ_bamNRtQ6Cc6EsCehGdbqowfiMIYruds7juUEUVfApEsveBr4K3jMVhr5u8AeLPyBDDgijLECTjE9HQ==",
-            "Content-Type": "application/vnd.flux",
-            "Accept": "application/csv"
-        },
-        body: query
-    });
+    const locID = data.locID;  // 例: "42"
+    console.log("取得した locID:", locID);
 
-    const text = await response.text();
-    console.log(text); // デバッグ用
-    const lines = text.split("\n");
+    // 画像のファイル名（例: yaba42.jpg）を作成
+    const imageUrl = `/images/yaba${locID}.jpg`;
 
-    let imageUrl = "/images/yaba101.jpg";
-    for (let line of lines) {
-        const columns = line.split(",");
-        console.log("columns[6] locID :", columns[6]);
-        if (columns.length > 6 && columns[7] === "locID") {
-            imageUrl = "/images/yaba" + columns[6] + ".jpg";
-        }
-    }
-        console.log("Image URL:", imageUrl);
-        console.timeEnd("getLatestImageUrl");
-    return imageUrl;
+    const imgElement = document.getElementById('location-image');
+    imgElement.src = imageUrl;
+
+    // 画像読み込み失敗時のフォールバック
+    imgElement.onerror = function () {
+      imgElement.src = '/images/default.jpg';
+    };
+  } catch (error) {
+    console.error("画像の更新に失敗:", error);
+  }
 }
 
-async function updateImage() {
-    console.time("updateImage");
-    
-    const imageUrl = await getLatestImageUrl();
-    document.getElementById("dynamicImage").src = imageUrl;
-    console.timeEnd("updateImage");
-}
+// 1秒ごとに locID を取得して画像を更新
+setInterval(fetchLocIdAndUpdateImage, 1000);
 
-// 5秒ごとに画像を更新
-// setInterval(updateImage, 2000);
-
-async function updateLoop() {
-    await updateImage();
-    setTimeout(updateLoop, 1000); // 1秒後に次の更新を開始
-}
-
-updateLoop(); // 最初の呼び出し
+// 初回読み込みでも即実行
+document.addEventListener('DOMContentLoaded', fetchLocIdAndUpdateImage);
