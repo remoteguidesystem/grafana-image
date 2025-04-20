@@ -1,22 +1,22 @@
 export async function handler(event, context) {
-  let result = {
-    method: event.httpMethod,
-    rawBody: event.body || null,
-    parsed: null,
-    error: null,
-  };
+  let locID = '103'; // デフォルト
 
   if (event.httpMethod === 'POST') {
     try {
-      result.parsed = JSON.parse(event.body);
+      const data = JSON.parse(event.body);
+      locID = String(data.locID || locID);
     } catch (err) {
-      result.error = err.toString();
+      console.error('[ERROR] Failed to parse JSON:', err);
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'Invalid JSON body' }),
+      };
     }
   }
 
   return {
     statusCode: 200,
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(result),
+    body: JSON.stringify({ locID }),
   };
 }
