@@ -1,39 +1,65 @@
-const fs = require('fs');
-const path = require('path');
-
-const dataFilePath = path.join(__dirname, 'locID.json');
-
-// 初期値を設定（ファイルがなければ）
-if (!fs.existsSync(dataFilePath)) {
-  fs.writeFileSync(dataFilePath, JSON.stringify({ locID: "103" }), 'utf8');
-}
+// グローバルに最新のlocIDを保持（セッション中のみ有効）
+let latestLocID = "103";
 
 export async function handler(event, context) {
-  let locID = "103"; // デフォルト
+  // CORS 対応
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+      },
+      body: '',
+    };
+  }
 
+  // POST: デバイスから locID を更新する
   if (event.httpMethod === 'POST') {
     try {
-      const data = JSON.parse(event.body);
-      locID = String(data.locID || locID);
+      const body = JSON.parse(event.body);
+      if (body.locID) {
+        latestLocID = body.locID;
+        console.log("locID updated to:", latestLocID);
+      }
 
-      // locID をファイルに保存
-      fs.writeFileSync(dataFilePath, JSON.stringify({ locID }), 'utf8');
-    } catch (err) {
-      console.error('[ERROR] Failed to parse JSON:', err);
+      return {
+        statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({ status: 'success', locID: latestLocID }),
+      };
+    } catch (error) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: 'Invalid JSON body' }),
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({ error: 'Invalid JSON' }),
       };
     }
   }
 
-  // 最新の locID を返す
+  // GET: 表示用PCが最新のlocIDを取得
+  if (event.httpMethod === 'GET') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      body: JSON.stringify({ locID: latestLocID }),
+    };
+  }
+
+  // それ以外のメソッドは拒否
   return {
-    statusCode: 200,
-  headers: {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',  // ★ CORS を許可する！
-  },
-    body: JSON.stringify({ locID }),
+    statusCode: 405,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+    body: JSON.stringify({ message: 'Method Not Allowed' }),
   };
 }
