@@ -1,24 +1,22 @@
 export async function handler(event, context) {
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ message: 'Method Not Allowed' }),
-    };
+  let locID = '102'; // デフォルト値
+
+  if (event.httpMethod === 'POST') {
+    try {
+      const data = JSON.parse(event.body);
+      locID = data.locID || locID;
+    } catch (err) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'Invalid JSON body' }),
+      };
+    }
   }
 
-  try {
-    const data = JSON.parse(event.body);
-    const locID = data.locID || '103'; // locID が無ければ '103' をデフォルトに
-
-    return {
-      statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ locID }),
-    };
-  } catch (error) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ message: 'Invalid JSON body' }),
-    };
-  }
+  // GETでもPOSTでもOK
+  return {
+    statusCode: 200,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ locID }),
+  };
 }
