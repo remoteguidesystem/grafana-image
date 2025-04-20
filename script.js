@@ -22,7 +22,7 @@ async function fetchLocIdAndUpdateImage() {
 }
 
 // 1秒ごとに locID を取得して画像を更新
-setInterval(fetchLocIdAndUpdateImage, 1000);
+setInterval(fetchLocIdAndUpdateImage, 5000);
 
 // 初回読み込みでも即実行
 document.addEventListener('DOMContentLoaded', fetchLocIdAndUpdateImage);
