@@ -1,5 +1,7 @@
 async function fetchLocIdAndUpdateImage() {
+          console.time("getLatestImageUrl");
   try {
+
     const response = await fetch('/.netlify/functions/getlocID');
     const data = await response.json();
 
@@ -9,6 +11,7 @@ async function fetchLocIdAndUpdateImage() {
     // 画像のファイル名（例: yaba42.jpg）を作成
     const imageUrl = `/images/yaba${locID}.jpg`;
 
+        console.time("updateImage");
     const imgElement = document.getElementById('targetImage');
     imgElement.src = imageUrl;
 
@@ -19,8 +22,10 @@ async function fetchLocIdAndUpdateImage() {
   } catch (error) {
     console.error("画像の更新に失敗:", error);
   }
-}
 
+            console.timeEnd("updateImage");
+}
+ console.timeEnd("getLatestImageUrl");
 // 1秒ごとに locID を取得して画像を更新
 setInterval(fetchLocIdAndUpdateImage, 5000);
 
