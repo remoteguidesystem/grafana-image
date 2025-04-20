@@ -25,7 +25,7 @@ async function fetchLocID() {
 
     console.log("取得したlocID:", locID);
     const image = document.getElementById("targetImage");
-    image.src = `https://remotoguidesystem.netlify.app/yaba${locID}.jpg`;
+    image.src = `https://remotoguidesystem.netlify.app/images/yaba${locID}.jpg`;
   } catch (error) {
     console.error('locIDの取得に失敗:', error);
   }
