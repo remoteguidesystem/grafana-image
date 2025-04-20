@@ -30,7 +30,10 @@ export async function handler(event, context) {
   // 最新の locID を返す
   return {
     statusCode: 200,
-    headers: { 'Content-Type': 'application/json' },
+  headers: {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',  // ★ CORS を許可する！
+  },
     body: JSON.stringify({ locID }),
   };
 }
