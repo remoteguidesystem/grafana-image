@@ -1,5 +1,5 @@
 export async function handler(event, context) {
-  let locID = '101'; // デフォルト値
+  let locID = '104'; // デフォルト値
 
   if (event.httpMethod === 'POST') {
     try {
