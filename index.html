@@ -10,5 +10,32 @@
     <h1>耶馬渓ツーリズム</h1>
     <img id="targetImage" src="images/yaba103.jpg" width="775" height="480">
     <script src="script.js"></script> <!-- JavaScript を読み込む -->
+
+<body>
+  <h1>現在の位置</h1>
+    <img id="targetImage" src="images/yaba103.jpg" width="775" height="480">
+
+  <script>
+    // 定期的に locID を Netlify Function から取得
+    async function fetchLocID() {
+      try {
+        const response = await fetch('https://your-site.netlify.app/.netlify/functions/getlocID');
+        const data = await response.json();
+        const locID = data.locID || "103"; // locID を取得、なければデフォルト
+
+        // 画像の src を切り替え
+        const image = document.getElementById("targetImage");
+        image.src = `yaba${locID}.jpg`;
+      } catch (error) {
+        console.error('Failed to fetch locID:', error);
+      }
+    }
+
+    // ページ読み込み時に locID を取得
+    fetchLocID();
+
+    // 定期的に locID を取得
+    setInterval(fetchLocID, 5000); // 5秒ごとに更新
+  </script>
 </body>
 </html>
