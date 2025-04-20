@@ -24,8 +24,9 @@ async function fetchLocIdAndUpdateImage() {
   }
 
             console.timeEnd("updateImage");
+           console.timeEnd("getLatestImageUrl");
 }
- console.timeEnd("getLatestImageUrl");
+
 // 1秒ごとに locID を取得して画像を更新
 setInterval(fetchLocIdAndUpdateImage, 5000);
 
